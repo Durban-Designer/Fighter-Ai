@@ -3,8 +3,7 @@ var paused = true
 var loopInterval
 
 ioHook.on('keyup', event => {
-  console.log(event);
-  if (event.keycode === 123) {
+  if (event.keycode === 88) {
     if (paused) {
       loopInterval = setInterval(gameLoop, 15);
       paused = false
@@ -15,7 +14,7 @@ ioHook.on('keyup', event => {
   }
 });
 
+ioHook.start();
 function gameLoop () {
   console.log('running');
 }
-npm install --save iohook

@@ -2,7 +2,9 @@
   "name": "Soul-Calibur-AI",
   "version": "0.0.1",
   "private": false,
-  "dependencies": {},
+  "dependencies": {
+    "iohook": "^0.2.4"
+  },
   "scripts": {
     "start": "node app.js"
   },
