@@ -3,15 +3,8 @@
   "version": "0.0.1",
   "private": false,
   "dependencies": {
-    "@tensorflow/tfjs": "^0.13.3",
-    "@tensorflow/tfjs-node": "^0.1.19",
-    "@tensorflow/tfjs-node-gpu": "^0.1.19",
-    "canvas": "^2.0.1",
-    "desktop-screenshot": "^0.1.1",
-    "ffmpeg": "0.0.4",
     "iohook": "^0.2.4",
-    "nodejs-screen-capture": "^0.2.0",
-    "screencap": "^1.0.0"
+    "nodejs-screen-capture": "^0.2.0"
   },
   "scripts": {
     "start": "node app.js"
