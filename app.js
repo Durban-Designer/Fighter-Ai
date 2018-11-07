@@ -8,7 +8,8 @@ const ctx = canvas.getContext('2d')
 var dir = __dirname
 var paused = true
 var loopInterval,
-  image
+  image,
+  result
 
 ioHook.on('keyup', event => {
   if (event.keycode === 88) {
@@ -30,8 +31,8 @@ function gameLoop () {
     } else {
       loadImage(dir + '\\image.png').then((screen) => {
         ctx.drawImage(screen, 50, 0, 70, 70)
-        image = tf.fromPixels(ctx);
-        console.log(image);
+        image = tf.fromPixels(canvas);
+        result = model.predict(image, {batchSize: 4});
       })
     }
   })
