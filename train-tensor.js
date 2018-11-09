@@ -1,28 +1,24 @@
 const tf = require('@tensorflow/tfjs');
+const argparse = require('argparse');
 require('@tensorflow/tfjs-node');
 const data = require('./src/data');
 const model = require('./src/model');
 
 async function run(epochs, batchSize, modelSavePath) {
-  await data.loadData();
-
-  const {images: trainImages, labels: trainLabels} = data.getTrainData();
-  model.summary();
-
+  await data.loadTensorData();
+  const {images: trainImages, labels: trainLabels} = data.getTensorTrainData();
   let epochBeginTime;
   let millisPerStep;
   const validationSplit = 0.15;
-  const numTrainExamplesPerEpoch =
-      trainImages.shape[0] * (1 - validationSplit);
-  const numTrainBatchesPerEpoch =
-      Math.ceil(numTrainExamplesPerEpoch / batchSize);
+  const numTrainExamplesPerEpoch = trainImages.shape[0] * (1 - validationSplit);
+  const numTrainBatchesPerEpoch = Math.ceil(numTrainExamplesPerEpoch / batchSize);
   await model.fit(trainImages, trainLabels, {
     epochs,
     batchSize,
     validationSplit
   });
 
-  const {images: testImages, labels: testLabels} = data.getTestData();
+  const {images: testImages, labels: testLabels} = data.getTensorTestData();
   const evalOutput = model.evaluate(testImages, testLabels);
 
   console.log(

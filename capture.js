@@ -6,9 +6,9 @@ var batchNum = Math.floor(Math.random() * 10000)
 var paused = true;
 var i = 0;
 var x = 0;
-var loopInterval;
+var loopInterval,
+  dir
 
-var dir = __dirname + '\\images\\Batch' + batchNum;
 ioHook.on('keyup', event => {
   console.log(event.keycode)
   if (event.keycode === 88) {
@@ -21,10 +21,17 @@ ioHook.on('keyup', event => {
   }
 });
 
-mkdirp(dir, function(err) {
-  ioHook.start();
-  gameLoop();
-});
+async function run (batchName) {
+  if (batchName === '') {
+    dir = __dirname + '\\images\\Batch' + batchNum;
+  } else {
+    dir = __dirname + '\\images\\' + batchName;
+  }
+  mkdirp(dir, function(err) {
+    ioHook.start();
+    gameLoop();
+  });
+}
 
 function gameLoop () {
   if (paused === false) {
@@ -40,3 +47,16 @@ function gameLoop () {
     })
   }
 }
+
+const parser = new argparse.ArgumentParser({
+  description: 'TensorFlow.js-Node-gpu Mugen Trainer.',
+  addHelp: true
+});
+parser.addArgument('--batch_name', {
+  type: 'string',
+  defaultValue: '',
+  help: 'Name of the Folder to where images will be saved.'
+});
+const args = parser.parseArgs();
+
+run(args.batch_name);
