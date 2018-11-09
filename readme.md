@@ -1,5 +1,7 @@
 # Mugen Fighter AI
-Warning still in Alpha / Heavy development
+
+##Warning still in Alpha / Heavy development
+
 This is an attempt to use tensorflow.js to apply labels to the Mugen fighting games screens in real time allowing a Brain.js bot to decide on a combo string to execute. The idea is to have a few stages in each loop, Observe the screen by taking a photo, Analyze the photo to determine key data such as player health, opponent health, positioning, whether the opponent is guarding high or low, and whether you can execute another attack in this frame. Then use this data to inform another Neural Network which is trained to assign combo string labels / movement to this input data. These combo strings are then dispatched to the virtual keyboard before we loop back to the observation phase.
 
 ## Getting Started
