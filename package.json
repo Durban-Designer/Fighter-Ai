@@ -1,5 +1,5 @@
 {
-  "name": "Soul-Calibur-AI",
+  "name": "Fighter-AI",
   "version": "0.0.1",
   "private": false,
   "dependencies": {
@@ -7,18 +7,22 @@
     "@tensorflow/tfjs-node": "^0.1.19",
     "@tensorflow/tfjs-node-gpu": "^0.1.19",
     "argparse": "^1.0.10",
+    "axios": "^0.18.0",
+    "brain.js": "^1.4.8",
     "canvas": "^2.0.1",
     "desktop-screenshot": "^0.1.1",
     "ffmpeg": "0.0.4",
     "iohook": "^0.2.4",
     "mkdirp": "^0.5.1",
+    "node-key-sender": "^1.0.10",
     "nodejs-screen-capture": "^0.2.0",
     "screencap": "^1.0.0"
   },
   "scripts": {
     "start": "node app.js",
     "capture": "node capture.js",
-    "train": "node train.js"
+    "train-tensor": "node train-tensor.js",
+    "train-brain": "node train-brain.js"
   },
   "eslintConfig": {
     "extends": "react-app"

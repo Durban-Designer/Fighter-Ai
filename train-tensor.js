@@ -1,7 +1,7 @@
 const tf = require('@tensorflow/tfjs');
-require('@tensorflow/tfjs-node-gpu');
-const data = require('./data');
-const model = require('./model');
+require('@tensorflow/tfjs-node');
+const data = require('./src/data');
+const model = require('./src/model');
 
 async function run(epochs, batchSize, modelSavePath) {
   await data.loadData();

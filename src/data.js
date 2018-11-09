@@ -2,8 +2,10 @@ const tf = require('@tensorflow/tfjs');
 const assert = require('assert');
 const fs = require('fs');
 const https = require('https');
+const axios = require('axios');
 const util = require('util');
 const zlib = require('zlib');
+const brainJs = require('brain.js');
 
 const readFile = util.promisify(fs.readFile);
 
@@ -12,9 +14,9 @@ const TRAIN_IMAGES_FILE = 'train-images';
 const TRAIN_LABELS_FILE = 'train-labels';
 const TEST_IMAGES_FILE = 'test-images';
 const TEST_LABELS_FILE = 'test-labels';
-const IMAGE_HEADER_BYTES = 16;
-const IMAGE_HEIGHT = 480;
-const IMAGE_WIDTH = 640;
+const IMAGE_HEADER_BYTES = 32;
+const IMAGE_HEIGHT = 600;
+const IMAGE_WIDTH = 800;
 const IMAGE_FLAT_SIZE = IMAGE_HEIGHT * IMAGE_WIDTH;
 const LABEL_HEADER_BYTES = 8;
 const LABEL_RECORD_BYTE = 1;
@@ -99,8 +101,9 @@ async function loadLabels(filename) {
 
 /** Helper class to handle loading training and test data. */
 class Dataset {
-  constructor() {
+  constructor () {
     this.dataset = null;
+    this.brainTrainData = [];
     this.trainSize = 0;
     this.testSize = 0;
     this.trainBatchIndex = 0;
@@ -115,6 +118,61 @@ class Dataset {
     ]);
     this.trainSize = this.dataset[0].length;
     this.testSize = this.dataset[2].length;
+  }
+
+  async loadLocalImage(filename) {
+    const buffer = fs.readFileSync(filename);
+
+    const headerBytes = IMAGE_HEADER_BYTES;
+    const recordBytes = IMAGE_HEIGHT * IMAGE_WIDTH;
+
+    const headerValues = loadHeaderValues(buffer, headerBytes);
+    console.log(headerValues, buffer);
+    assert.equal(headerValues[5], IMAGE_HEIGHT);
+    assert.equal(headerValues[4], IMAGE_WIDTH);
+
+    const images = [];
+    let index = headerBytes;
+    while (index < buffer.byteLength) {
+      const array = new Float32Array(recordBytes);
+      for (let i = 0; i < recordBytes; i++) {
+        // Normalize the pixel values into the 0-1 interval, from
+        // the original 0-255 interval.
+        array[i] = buffer.readUInt8(index++) / 255;
+      }
+      images.push(array);
+    }
+
+    assert.equal(images.length, headerValues[1]);
+    return images;
+  }
+
+  async loadBrainData() {
+    axios.get('https://api.quickvenom.org/brains/training')
+      .then(response => {
+        this.brainTrainData = response.data
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  async getBrain(name) {
+    axios.get('https://api.quickvenom.org/brains/' + name)
+      .then(response => {
+        let json = response.data;
+        var net = new brainJs.NeuralNetwork();
+        net.fromJSON(json);
+        var run = net.toFunction();
+        return run
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+  getBrainTrainData() {
+    return this.brainTrainData;
   }
 
   getTrainData() {

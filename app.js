@@ -1,10 +1,11 @@
 const ioHook = require("iohook");
 const tf = require('@tensorflow/tfjs');
 var screenCap = require('desktop-screenshot');
-require('@tensorflow/tfjs-node-gpu');
-const { createCanvas, loadImage } = require('canvas');
-const canvas = createCanvas(640, 480);
-const ctx = canvas.getContext('2d');
+require('@tensorflow/tfjs-node');
+const data = require('./src/data');
+const virtKeys = require('./src/virtKeys');
+const model = require('./src/model');
+// const brain = data.getBrain('brainAlpha');
 var dir = __dirname;
 var paused = true;
 var loopInterval,
@@ -15,10 +16,9 @@ var loopInterval,
 ioHook.on('keyup', event => {
   if (event.keycode === 88) {
     if (paused) {
-      loopInterval = setInterval(gameLoop, 1000);
       paused = false;
+      gameLoop();
     } else {
-      clearInterval(loopInterval);
       paused = true;
     }
   }
@@ -26,16 +26,19 @@ ioHook.on('keyup', event => {
 
 ioHook.start();
 function gameLoop () {
-  screenCap(dir + '\\image.png', {width: 640, height: 480, quality: 100}, function (error, complete) {
-    if (error) {
-      console.log(error);
-    } else {
-      loadImage(dir + '\\image.png').then((screen) => {
-        ctx.drawImage(screen, 50, 0, 70, 70);
-        imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        image = tf.fromPixels(imageData);
-        result = model.predict(image, {batchSize: 4});
-      })
-    }
-  })
+  if (!paused) {
+    screenCap(dir + '\\image.png', {width: 800, height: 600, quality: 60}, function (error, complete) {
+      if (error) {
+        console.log(error);
+      } else {
+        imageData = data.loadLocalImage(dir + '\\image.png')
+        console.log(imageData);
+        result = model.predict(imageData, {batchSize: 4});
+        console.log(result);
+        // brainResult = brain(result);
+        // virtKeys.dispatch(brainResult);
+        gameLoop();
+      }
+    })
+  }
 }

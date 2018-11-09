@@ -29,7 +29,7 @@ mkdirp(dir, function(err) {
 function gameLoop () {
   if (paused === false) {
     var path = dir + '\\image' + i + '.png'
-    screenCap(path, {width: 640, height: 480, quality: 100}, function (error, complete) {
+    screenCap(path, {width: 800, height: 600, quality: 60}, function (error, complete) {
       if (error) {
         console.log(error + 'screen cap error');
       } else {
