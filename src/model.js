@@ -1,7 +1,7 @@
 const tf = require('@tensorflow/tfjs');
 const model = tf.sequential();
 model.add(tf.layers.conv2d({
-  inputShape: [800, 600, 3],
+  inputShape: [600, 800, 3],
   kernelSize: 5,
   filters: 8,
   strides: 10,

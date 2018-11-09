@@ -1,5 +1,6 @@
 const ioHook = require("iohook");
 const tf = require('@tensorflow/tfjs');
+const fs = require('fs');
 var screenCap = require('desktop-screenshot');
 require('@tensorflow/tfjs-node');
 const data = require('./src/data');
@@ -25,20 +26,31 @@ ioHook.on('keyup', event => {
 });
 
 ioHook.start();
-function gameLoop () {
+const gameLoop = function () {
   if (!paused) {
     screenCap(dir + '\\image.png', {width: 800, height: 600, quality: 60}, function (error, complete) {
       if (error) {
         console.log(error);
       } else {
-        imageData = data.loadLocalImage(dir + '\\image.png')
-        console.log(imageData);
-        result = model.predict(imageData, {batchSize: 4});
-        console.log(result);
-        // brainResult = brain(result);
-        // virtKeys.dispatch(brainResult);
-        gameLoop();
+        internalLoop();
       }
     })
   }
+}
+
+const internalLoop = async function () {
+  await getImageTensor();
+  result = model.predict(imageData, {batchSize: 4});
+  console.log(result);
+  // brainResult = brain(result);
+  // virtKeys.dispatch(brainResult);
+  fs.unlinkSync(dir + '\\image.png');
+  gameLoop();
+  return;
+}
+
+const getImageTensor = async function () {
+  imageData = await data.getImage(dir + '\\image.png');
+  console.log(imageData);
+  return;
 }

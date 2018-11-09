@@ -6,6 +6,10 @@ const axios = require('axios');
 const util = require('util');
 const zlib = require('zlib');
 const brainJs = require('brain.js');
+const { Image, createCanvas } = require('canvas');
+const canvas = createCanvas(800, 600);
+const ctx = canvas.getContext('2d');
+
 
 const readFile = util.promisify(fs.readFile);
 
@@ -99,6 +103,19 @@ async function loadLabels(filename) {
   return labels;
 }
 
+async function loadLocalImage (filename) {
+  try {
+    var img = new Image()
+    img.onload = () => ctx.drawImage(img, 0, 0);
+    img.onerror = err => { throw err };
+    img.src = filename;
+    image = tf.fromPixels(canvas);
+    image = image.reshape([1, 600, 800, 3]);
+    return image;
+  } catch (err) {
+    console.log(err);
+  }
+}
 /** Helper class to handle loading training and test data. */
 class Dataset {
   constructor () {
@@ -108,6 +125,7 @@ class Dataset {
     this.testSize = 0;
     this.trainBatchIndex = 0;
     this.testBatchIndex = 0;
+    this.image = null;
   }
 
   /** Loads training and test data. */
@@ -120,31 +138,13 @@ class Dataset {
     this.testSize = this.dataset[2].length;
   }
 
-  async loadLocalImage(filename) {
-    const buffer = fs.readFileSync(filename);
-
-    const headerBytes = IMAGE_HEADER_BYTES;
-    const recordBytes = IMAGE_HEIGHT * IMAGE_WIDTH;
-
-    const headerValues = loadHeaderValues(buffer, headerBytes);
-    console.log(headerValues, buffer);
-    assert.equal(headerValues[5], IMAGE_HEIGHT);
-    assert.equal(headerValues[4], IMAGE_WIDTH);
-
-    const images = [];
-    let index = headerBytes;
-    while (index < buffer.byteLength) {
-      const array = new Float32Array(recordBytes);
-      for (let i = 0; i < recordBytes; i++) {
-        // Normalize the pixel values into the 0-1 interval, from
-        // the original 0-255 interval.
-        array[i] = buffer.readUInt8(index++) / 255;
-      }
-      images.push(array);
+  async getImage(filename) {
+    try {
+      this.image = await loadLocalImage(filename);
+    } catch (error) {
+      console.log('error loading image', error);
     }
-
-    assert.equal(images.length, headerValues[1]);
-    return images;
+    return this.image;
   }
 
   async loadBrainData() {
