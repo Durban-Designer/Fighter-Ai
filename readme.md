@@ -15,35 +15,35 @@ You must run Mugen and the main screen at 800X600 for this to work, even at that
 
 install dependencies
 
-...
+```
 npm install
-...
+```
 
 ### Running
 
 To Run the image capture module use;
 
-...
+```
 node capture
-...
+```
 
 To run the tensorFlow.js training module use;
 
-...
+```
 node train-tensor
-...
+```
 
 To run the Brain.js training module use;
 
-...
+```
 node train-brain
-...
+```
 
 To run the actual Bot use;
 
-...
+```
 npm start
-...
+```
 
 ## Contributing
 If you are interested in contributing please email me at Royce.Birnbaum@gmail.com
