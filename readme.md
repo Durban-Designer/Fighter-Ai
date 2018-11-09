@@ -15,7 +15,7 @@ You must run Mugen and the main screen at 800X600 for this to work, even at that
 
 ### Installing
 
-install dependencies
+Install dependencies
 
 ```
 npm install
