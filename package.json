@@ -11,13 +11,9 @@
     "brain.js": "^1.4.8",
     "canvas": "^2.1.0",
     "desktop-screenshot": "^0.1.1",
-    "ffmpeg": "0.0.4",
-    "get-image-data": "^3.0.1",
     "iohook": "^0.2.4",
     "mkdirp": "^0.5.1",
-    "node-key-sender": "^1.0.10",
-    "nodejs-screen-capture": "^0.2.0",
-    "screencap": "^1.0.0"
+    "node-key-sender": "^1.0.10"
   },
   "scripts": {
     "start": "node app.js",
@@ -26,7 +22,6 @@
     "train-brain": "node train-brain.js"
   },
   "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": [
     ">0.2%",
