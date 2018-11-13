@@ -45,7 +45,7 @@ parser.addArgument('--batch_size', {
   type: 'int',
   defaultValue: 128,
   help: 'Batch size to be used during model training.'
-})
+});
 parser.addArgument('--model_save_path', {
   type: 'string',
   help: 'Path to which the model will be saved after training.'
