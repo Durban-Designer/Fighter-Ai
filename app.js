@@ -13,17 +13,6 @@ var loopInterval,
   imageData,
   result
 
-ioHook.on('keyup', event => {
-  if (event.keycode === 88) {
-    if (paused) {
-      paused = false;
-      gameLoop();
-    } else {
-      paused = true;
-    }
-  }
-});
-
 async function run (name, brain) {
   if (name === '') {
     console.log('Warning!! You must provide a --model_name argument so we know what model to use');
@@ -92,5 +81,16 @@ parser.addArgument('--brain_name', {
   help: 'Name of the brain to retrieve from the cloud.'
 });
 const args = parser.parseArgs();
+
+ioHook.on('keyup', event => {
+  if (event.keycode === 88) {
+    if (paused) {
+      paused = false;
+      gameLoop();
+    } else {
+      paused = true;
+    }
+  }
+});
 
 run(args.model_name, args.brain_name);
