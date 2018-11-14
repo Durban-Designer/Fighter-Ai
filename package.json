@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": false,
   "dependencies": {
+    "@google-cloud/storage": "^2.3.0",
     "@tensorflow/tfjs": "^0.13.3",
     "@tensorflow/tfjs-node": "^0.1.19",
     "@tensorflow/tfjs-node-gpu": "^0.1.19",
@@ -21,8 +22,7 @@
     "train-tensor": "node train-tensor.js",
     "train-brain": "node train-brain.js"
   },
-  "eslintConfig": {
-  },
+  "eslintConfig": {},
   "browserslist": [
     ">0.2%",
     "not dead",
