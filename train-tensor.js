@@ -46,10 +46,10 @@ parser.addArgument('--batch_size', {
   defaultValue: 128,
   help: 'Batch size to be used during model training.'
 });
-parser.addArgument('--model_save_path', {
+parser.addArgument('--model_name', {
   type: 'string',
   help: 'Path to which the model will be saved after training.'
 });
 const args = parser.parseArgs();
 
-run(args.epochs, args.batch_size, args.model_save_path);
+run(args.epochs, args.batch_size, args.model_name);

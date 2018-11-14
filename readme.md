@@ -26,25 +26,25 @@ npm install
 To Run the image capture module use;
 
 ```
-node capture
+node capture --batch_name [name_of_batch]
 ```
 
 To run the tensorFlow.js training module use;
 
 ```
-node train-tensor
+node train-tensor --epochs [num_of_epochs] --batch_size [img_per_batch] --model_name [name_of_model]
 ```
 
 To run the Brain.js training module use;
 
 ```
-node train-brain
+node train-brain --brain_name [what_to_name_brain]
 ```
 
 To run the actual Bot use;
 
 ```
-npm start
+node start --model_name [model_to_use] --brain_name [brain_to_use]
 ```
 
 ## Contributing
