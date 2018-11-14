@@ -18,7 +18,8 @@ async function run (name, brain) {
     console.log('Warning!! You must provide a --model_name argument so we know what model to use');
     process.exit(1);
   } else if (brain === '') {
-
+    console.log('Warning!! You must provide a --brain_name argument so we know what brain to use');
+    process.exit(1);
   } else {
     try {
       const model = await tf.loadModel(name);
@@ -27,7 +28,7 @@ async function run (name, brain) {
       process.exit(1);
     }
     try {
-      const brain = data.getBrain(brain);
+      const brain = await data.getBrain(brain);
     } catch (err) {
       console.log('failed to load brain');
       process.exit(1);
